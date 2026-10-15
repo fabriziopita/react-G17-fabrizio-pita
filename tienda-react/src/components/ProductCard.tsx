@@ -11,11 +11,11 @@ export default function ProductCard({ producto } : Props) {
         <img src={producto.imagen} alt={producto.nombre} className="mb-3 aspect-square object-contain" />
         <p className="text-sm text-gray-500">{producto.marca}</p>
         <h2 className="font-semibold">{producto.nombre}</h2>
-        <p className="text-sm">{
+        <p className={producto.stock === 0 ? "text-red-400 text-sm font-bold" : "text-sm"}>{
             producto.stock === 0 ? 'Agotado' : `${producto.stock} disponibles`
         }</p>
         <p className="text-sx text-gray-500">{(producto.precio * 1.18).toFixed(2)} con IGV</p>
-        <p className="mt-2">{formatearPrecio(producto.precio)}</p>
+        <p className="mt-2 text-green-600 font-bold">{formatearPrecio(producto.precio)}</p>
     </article>
   )
 }
