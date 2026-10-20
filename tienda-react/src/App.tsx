@@ -20,12 +20,11 @@ export default function App() {
   const total = carrito.reduce((suma, i) => suma + i.precio * i.cantidad, 0);
   return (
     <main className="mx-auto max-w-5xl p-6">
-      <Header nombre="TecCart" eslogan="Una Vida Tecnologica"/>
+      <Header nombre="TecCart" eslogan="Una Vida Tecnologica" 
+      resumen={`🛒 ${unidades} productos - ${formatearPrecio(total)}`}/>
       <Banner titulo="Tecnología para tu próximo nivel"></Banner>
       {/* PROPS */}
       <section id="catalogo" className="flex justify-center gap-4 flex-wrap"></section>
-      <Header nombre="TecCart" eslogan="Una Vida Tecnologica" 
-      resumen={`🛒 ${unidades} productos - ${formatearPrecio(total)}`}/>
       {/* PROPS */}
       <p className="mb-4 text-sm text-gray-500">{productos.length} productos</p>
       {estado === 'cargando' && <p className="text-gray-500">Cargando catalogo...</p>}
