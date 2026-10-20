@@ -5,8 +5,10 @@ export interface Producto {
     precio : number;
     imagen : string;
     stock : number;
+    categoria : Categoria;
 }
 
+export type Categoria = 'todas'| 'laptops'|'audio'|'relojes';
 export type EstadoCarga = 'cargando' | 'listo' | 'error';
 
 export interface ItemCarrito  {

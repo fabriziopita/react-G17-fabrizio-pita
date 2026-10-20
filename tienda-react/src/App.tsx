@@ -4,20 +4,28 @@ import Header from "./components/Header"
 import Banner from "./components/Banner"
 import ProductCard from "./components/ProductCard"
 import { productos } from "./datos"
-import type {EstadoCarga, ItemCarrito, Producto} from "./tipos"
+import type {EstadoCarga, ItemCarrito, Producto, Categoria} from "./tipos"
 import { agregarItem, quitarItem } from "./carrito"
 import formatearPrecio from "./formato"
 import Beneficio from "./components/Beneficio"
 const estado = 'listo' as EstadoCarga;
+const categorias : Categoria[]= ['todas','laptops','audio','relojes'];
 
 export default function App() {
   const [carrito, setCarrito] = useState<ItemCarrito[]>([]);
   const [carritoAbierto, setCarritoAbierto] = useState(false);
+
+  const [categoriaActiva, setCategoriaActiva] = useState<Categoria>('todas');
+
+  const visibles = categoriaActiva === 'todas' ? 
+          productos : productos.filter((p) => p.categoria === categoriaActiva);
+
   function agregarAlCarrito(producto : Producto) {
     setCarrito(agregarItem(producto, carrito))
   }
   const unidades = carrito.reduce((suma, i) => suma + i.cantidad, 0);
   const total = carrito.reduce((suma, i) => suma + i.precio * i.cantidad, 0);
+
   return (
     <main className="mx-auto max-w-5xl p-6">
       <Header nombre="TecCart" eslogan="Una Vida Tecnologica" 
@@ -26,13 +34,22 @@ export default function App() {
       {/* PROPS */}
       <section id="catalogo" className="flex justify-center gap-4 flex-wrap"></section>
       {/* PROPS */}
-      <p className="mb-4 text-sm text-gray-500">{productos.length} productos</p>
+      <nav className="mb-4 flex gap-2" aria-label="Filtrar por categoria">
+        {
+          categorias.map((c) => (
+            <button key={c} onClick={() => setCategoriaActiva(c)} 
+            className={`rounded-full border px-3 py-1 text-sm ${ c === categoriaActiva ? 'bg-black text-white' : ''}`}>{c}
+            </button>
+          ))
+        }
+      </nav>
+      <p className="mb-4 text-sm text-gray-500">{visibles.length} productos</p>
       {estado === 'cargando' && <p className="text-gray-500">Cargando catalogo...</p>}
       {estado === 'error' && <p className="text-red-600">No pudimos cargar los productos</p>}
       {estado === 'listo' && (
           <section>
           {
-            productos.map((p) => <ProductCard producto={p} key={p.id} onAgregar={agregarAlCarrito}/>)
+            visibles.map((p) => <ProductCard producto={p} key={p.id} onAgregar={agregarAlCarrito}/>)
           }
           </section>
         )
