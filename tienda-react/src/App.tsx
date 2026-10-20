@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Footer from "./components/Footer"
 import Header from "./components/Header"
 import Banner from "./components/Banner"
@@ -9,26 +9,53 @@ import { agregarItem, quitarItem } from "./carrito"
 import formatearPrecio from "./formato"
 import Beneficio from "./components/Beneficio"
 const estado = 'listo' as EstadoCarga;
-const categorias : Categoria[]= ['todas','laptops','audio','relojes'];
-
+const categorias : Categoria[]= ['todas','laptops','audio','relojes','computadoras'];
+const CLAVE_CARRITO = 'tienda_carrito';
+const nombreTienda = 'Tienda Tech';
 export default function App() {
-  const [carrito, setCarrito] = useState<ItemCarrito[]>([]);
+  const [carrito, setCarrito] = useState<ItemCarrito[]>(leerCarrito);
   const [carritoAbierto, setCarritoAbierto] = useState(false);
-
   const [categoriaActiva, setCategoriaActiva] = useState<Categoria>('todas');
+  const [termino, setTermino] = useState('');
 
-  const visibles = categoriaActiva === 'todas' ? 
-          productos : productos.filter((p) => p.categoria === categoriaActiva);
+  useEffect( () => {
+    try {
+      localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+    } catch (error) {
+      console.warn('No se pudo guardar el carrito', error instanceof Error ? error.message : error);
+    }
+  }, [carrito]);
+  
+  const busqueda = termino.trim().toLowerCase();  
 
+  const visibles = productos.filter( (p) => (
+    (categoriaActiva === 'todas' || p.categoria === categoriaActiva) && 
+    (busqueda === '' || p.nombre.toLowerCase().includes(busqueda) || 
+    p.marca.toLowerCase().includes(busqueda))
+  ));
+  
+  useEffect(() => {
+    document.title = `${nombreTienda} - ${visibles.length} resultados`;
+  },[visibles.length]);
+  
   function agregarAlCarrito(producto : Producto) {
     setCarrito(agregarItem(producto, carrito))
+  }
+  function leerCarrito() : ItemCarrito[] {
+    try {
+      const crudo : unknown = JSON.parse(localStorage.getItem(CLAVE_CARRITO) ?? '[]');
+      return Array.isArray(crudo) ? (crudo as ItemCarrito[]) : [];
+    } catch (error) {
+      return [];
+    }
   }
   const unidades = carrito.reduce((suma, i) => suma + i.cantidad, 0);
   const total = carrito.reduce((suma, i) => suma + i.precio * i.cantidad, 0);
 
+  
   return (
     <main className="mx-auto max-w-5xl p-6">
-      <Header nombre="TecCart" eslogan="Una Vida Tecnologica" 
+      <Header nombre={nombreTienda} eslogan="Una Vida Tecnologica" 
       resumen={`🛒 ${unidades} productos - ${formatearPrecio(total)}`}/>
       <Banner titulo="Tecnología para tu próximo nivel"></Banner>
       {/* PROPS */}
@@ -43,6 +70,16 @@ export default function App() {
           ))
         }
       </nav>
+      <input type="search" placeholder="Buscar por nombre o marca..." 
+            className="mb-4 w-64 rounded-lg border px-3 py-2 text-sm"
+            value={termino} aria-label="Buscar productos"
+            onChange={(e) => setTermino(e.target.value)}
+            />
+      {visibles.length === 0 && (
+        <p className="text-gray-500">{
+          busqueda !== '' ? `No encontramos productos para "${termino.trim()}"` : 'No hay productos en esta categoria'
+        }</p>
+      )}
       <p className="mb-4 text-sm text-gray-500">{visibles.length} productos</p>
       {estado === 'cargando' && <p className="text-gray-500">Cargando catalogo...</p>}
       {estado === 'error' && <p className="text-red-600">No pudimos cargar los productos</p>}
