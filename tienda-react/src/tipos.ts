@@ -6,3 +6,12 @@ export interface Producto {
     imagen : string;
     stock : number;
 }
+
+export type EstadoCarga = 'cargando' | 'listo' | 'error';
+
+export interface ItemCarrito  {
+    id: number;
+    nombre : string;
+    precio : number;
+    cantidad : number;
+}

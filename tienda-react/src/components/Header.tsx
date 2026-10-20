@@ -2,8 +2,9 @@
 interface Props {
     nombre : string;
     eslogan?: string;
+    resumen?:  string;
 }
-export default function Header ( {nombre , eslogan = "Tecnologia para todos"} : Props) {
+export default function Header ( {nombre , eslogan = "Tecnologia para todos", resumen} : Props) {
     return(
         <header className="mb-6 flex items-center justify-between">
             <div className="bg-blue-500 p-2 rounded-md">
@@ -19,6 +20,7 @@ export default function Header ( {nombre , eslogan = "Tecnologia para todos"} : 
             <p className="rounded-md bg-slate-100 px-3 py-2 text-slate-700">
                 🛒 0 productos
             </p>
+            <p>{ resumen ?? '🛒 0 productos'}</p>
         </header>
     )
 }
