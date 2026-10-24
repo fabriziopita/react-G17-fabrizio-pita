@@ -19,7 +19,7 @@ function mapearProducto (crudo : ProductoAPI) : Producto {
         marca : crudo.brand ?? '',
         precio : crudo.price,
         imagen : crudo.thumbnail,
-        categoria : crudo.category ?? 'otros',
+        categoria : (crudo.category ?? 'otros') as Producto['categoria'],
         stock : crudo.stock ?? 0
     }
 }
@@ -34,6 +34,7 @@ export async function obtenerProductos(): Promise <{ productos : Producto[] ; es
             esRespaldo : false
         }
     } catch (error) {
+        if(error instanceof DOMException && error.name === 'AbortError') throw Error;
         console.warn('Api no disponible, usando el catalogo semilla.', error instanceof Error ? error.message : error);
         return {
             productos : respaldo,

@@ -5,7 +5,7 @@ export interface Producto {
     precio : number;
     imagen : string;
     stock : number;
-    categoria : string;
+    categoria : Categoria;
 }
 
 export type Categoria = 'todas'| 'laptops'|'audio'|'relojes'|'computadoras';
@@ -16,4 +16,19 @@ export interface ItemCarrito  {
     nombre : string;
     precio : number;
     cantidad : number;
+}
+
+export interface DatosEnvio {
+    nombre:string;
+    email:string;
+    direccion:string;
+    telefono:string;
+}
+
+export interface Pedido {
+    id: number;
+    fecha: string;
+    cliente : DatosEnvio;
+    items : ItemCarrito[];
+    total: number;
 }

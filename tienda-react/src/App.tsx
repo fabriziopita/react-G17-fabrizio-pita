@@ -1,23 +1,44 @@
 import { useState, useEffect } from "react"
 import Footer from "./components/Footer"
 import Header from "./components/Header"
-import Banner from "./components/Banner"
-import ProductCard from "./components/ProductCard"
-import { productos } from "./datos"
-import type {EstadoCarga, ItemCarrito, Producto, Categoria} from "./tipos"
+import type {EstadoCarga, ItemCarrito, Producto} from "./tipos"
 import { agregarItem, quitarItem } from "./carrito"
 import formatearPrecio from "./formato"
-import Beneficio from "./components/Beneficio"
-const estado = 'listo' as EstadoCarga;
-const categorias : Categoria[]= ['todas','laptops','audio','relojes','computadoras'];
+import { obtenerProductos } from "./api"
+import Detalle from './pages/Detalle';
+import PanelCarrito from "./components/PanelCarrito"
+import { Route, Routes } from "react-router"
+import { Home } from "./pages/Home"
+import Layout from "./layout/Layout"
+import NoEncontrada from "./pages/NoEncontrada"
+import Checkout from "./pages/Checkout"
+
 const CLAVE_CARRITO = 'tienda_carrito';
-const nombreTienda = 'Tienda Tech';
+
 export default function App() {
   const [carrito, setCarrito] = useState<ItemCarrito[]>(leerCarrito);
-  const [carritoAbierto, setCarritoAbierto] = useState(false);
-  const [categoriaActiva, setCategoriaActiva] = useState<Categoria>('todas');
-  const [termino, setTermino] = useState('');
 
+  const [productos, setProductos] = useState<Producto[]>([]);
+  const [estado, setEstado] = useState<EstadoCarga>('cargando');
+  const [esRespaldo, setEsRespaldo] = useState(false);
+  const [intento, setIntento] = useState(0);
+  useEffect(() => {
+    const controlador = new AbortController();
+    async function cargar () {
+      try {
+        const resultado = await obtenerProductos();
+        setProductos(resultado.productos);
+        setEsRespaldo(resultado.esRespaldo);
+        setEstado('listo');
+      } catch (error) {
+        if(error instanceof DOMException && error.name === 'AbortError') return;
+        console.warn('Fallo imprevisto al cargar');
+        setEstado('error');
+      }
+    }
+    cargar();
+    return () => controlador.abort();
+  },[intento])
   useEffect( () => {
     try {
       localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
@@ -25,21 +46,15 @@ export default function App() {
       console.warn('No se pudo guardar el carrito', error instanceof Error ? error.message : error);
     }
   }, [carrito]);
-  
-  const busqueda = termino.trim().toLowerCase();  
 
-  const visibles = productos.filter( (p) => (
-    (categoriaActiva === 'todas' || p.categoria === categoriaActiva) && 
-    (busqueda === '' || p.nombre.toLowerCase().includes(busqueda) || 
-    p.marca.toLowerCase().includes(busqueda))
-  ));
-  
-  useEffect(() => {
-    document.title = `${nombreTienda} - ${visibles.length} resultados`;
-  },[visibles.length]);
-  
   function agregarAlCarrito(producto : Producto) {
     setCarrito(agregarItem(producto, carrito))
+  }
+  function quitarDelCarrito(id : number) {
+    setCarrito(quitarItem(carrito, id));
+  }
+  function vaciarCarrito() {
+    setCarrito([]);
   }
   function leerCarrito() : ItemCarrito[] {
     try {
@@ -49,73 +64,40 @@ export default function App() {
       return [];
     }
   }
+  
   const unidades = carrito.reduce((suma, i) => suma + i.cantidad, 0);
   const total = carrito.reduce((suma, i) => suma + i.precio * i.cantidad, 0);
-
+  const nombreTienda = 'Tienda Tech';
   
   return (
-    <main className="mx-auto max-w-5xl p-6">
-      <Header nombre={nombreTienda} eslogan="Una Vida Tecnologica" 
-      resumen={`🛒 ${unidades} productos - ${formatearPrecio(total)}`}/>
-      <Banner titulo="Tecnología para tu próximo nivel"></Banner>
-      {/* PROPS */}
-      <section id="catalogo" className="flex justify-center gap-4 flex-wrap"></section>
-      {/* PROPS */}
-      <nav className="mb-4 flex gap-2" aria-label="Filtrar por categoria">
-        {
-          categorias.map((c) => (
-            <button key={c} onClick={() => setCategoriaActiva(c)} 
-            className={`rounded-full border px-3 py-1 text-sm ${ c === categoriaActiva ? 'bg-black text-white' : ''}`}>{c}
-            </button>
-          ))
+    <Routes>
+      <Route element = {
+        <Layout
+          nombreTienda = {nombreTienda}
+          resumen = {`🛒 ${unidades} productos - ${formatearPrecio(total)}`}
+          items = {carrito}
+          onQuitar = {quitarDelCarrito}
+          onVaciar={vaciarCarrito}
+        />
+      }>
+        <Route path="/" element = {
+          <Home esRespaldo={esRespaldo} onReintentar={() => {setIntento(intento + 1); setEstado('cargando')}}
+          productos={productos} estado={estado} onAgregar={agregarAlCarrito}/>
         }
-      </nav>
-      <input type="search" placeholder="Buscar por nombre o marca..." 
-            className="mb-4 w-64 rounded-lg border px-3 py-2 text-sm"
-            value={termino} aria-label="Buscar productos"
-            onChange={(e) => setTermino(e.target.value)}
-            />
-      {visibles.length === 0 && (
-        <p className="text-gray-500">{
-          busqueda !== '' ? `No encontramos productos para "${termino.trim()}"` : 'No hay productos en esta categoria'
-        }</p>
-      )}
-      <p className="mb-4 text-sm text-gray-500">{visibles.length} productos</p>
-      {estado === 'cargando' && <p className="text-gray-500">Cargando catalogo...</p>}
-      {estado === 'error' && <p className="text-red-600">No pudimos cargar los productos</p>}
-      {estado === 'listo' && (
-          <section>
-          {
-            visibles.map((p) => <ProductCard producto={p} key={p.id} onAgregar={agregarAlCarrito}/>)
-          }
-          </section>
-        )
-      }
-      <button className="mb-4 text-sm" onClick={() => setCarritoAbierto(!carritoAbierto)}>{carritoAbierto ? 'Ocultar carrito' : 'Ver carrito'}</button>
-      
-      {carritoAbierto && (<><section className="mb-6 rounded-xl border p-4">
-          <h2 className="font-semibold">Tu carrito</h2>
-          {carrito.length === 0 && <p className="text-sm text-gray-500">Tu carrito esta vacio</p>}
-          <ul>
-            {carrito.map((item) => (
-              <li key={item.id} className="flex items-center justify-between py-1 text-sm">
-                <span>{item.nombre} x {item.cantidad}</span>
-                <button onClick={() => setCarrito(quitarItem(carrito, item.id))} aria-label="Quitar del barrito">X</button>
-              </li>
-            ))}
-          </ul>
-          {carrito.length > 0 && (
-            <button className="mt-2 text-sm underline" onClick={() => setCarrito([])}>Vaciar carrito</button>
-          )}
-        </section><section className="p-6 mt-8 border-t pt-4 text-sm text-gray-500">
-            <h1 className="text-xl font-bold text-center">Conoce nuestros beneficios</h1>
-            <div id="beneficios" className="grid grid-cols-[repeat(auto-fit,minmax(min(150px,100%),1fr))] gap-6 p-6">
-              <Beneficio titulo="Envio gratis a todo el país" icono="🚚" detalle="Envio gratis a todo el país"></Beneficio>
-              <Beneficio titulo="Hasta 12 cuotas sin interés" icono="💳" detalle="Hasta 12 cuotas sin interés"></Beneficio>
-              <Beneficio titulo="Garantia de 1 año" icono="🛡️" detalle="Garantía de 1 año en todos nuestros productos"></Beneficio>
-            </div>
-          </section></>)}
-      <Footer/>
-    </main>
+        />
+        <Route  path="/producto/:id" element = {
+          <Detalle productos={productos} onAgregar={agregarAlCarrito}/>
+        }
+        />
+        
+      </Route>
+      <Route path="*" element ={
+          <NoEncontrada/>
+      }/>
+      <Route  path="/checkout" element = {
+          <Checkout carrito={carrito} total={total} onVaciar={vaciarCarrito}/>
+        }
+      />
+    </Routes>
   )
 }
