@@ -1,4 +1,4 @@
-import type { Producto } from "./tipos";
+import type { Producto } from "../dominio/tipos";
 import { productos as respaldo } from "./datos";
 const BASE = 'https://dummyjson.com';
 

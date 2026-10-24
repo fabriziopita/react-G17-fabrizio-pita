@@ -1,13 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from "react-router"
 import './index.css'
 import App from './App.tsx'
+import { BrowserRouter } from 'react-router'
+import { CarritoProvider } from './aplicacion/CarritoContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <CarritoProvider>
+        <App />
+      </CarritoProvider>
+      {/** OTRO PROVIDER */}
     </BrowserRouter>
   </StrictMode>,
 )

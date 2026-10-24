@@ -1,14 +1,11 @@
 import { Link } from "react-router";
-import formatearPrecio from "../formato";
-import type { DatosEnvio, ItemCarrito, Pedido } from "../tipos";
-import { use, useState, type ChangeEvent, type FormEvent } from "react";
-import { guardarPedido } from "../pedidos";
+import formatearPrecio from "../../formato";
+import type { DatosEnvio, Pedido } from "../../dominio/tipos";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { guardarPedido } from "../../infraestructura/pedidos";
+import { useCart } from "../../aplicacion/useCart";
 
-interface Props {
-    carrito : ItemCarrito[];
-    total : number ;
-    onVaciar : () => void;
-}
+
 type Errores = Partial<Record<keyof DatosEnvio, string>>
 function validar (form : DatosEnvio) : Errores {
     const errores : Errores = {}
@@ -18,7 +15,8 @@ function validar (form : DatosEnvio) : Errores {
     if(!/^[0-9\s+-]{7,}$/.test(form.telefono)) errores.telefono = 'Escriba almenos 7 digitos';
     return errores;
 }
-export default function Checkout ({carrito, total, onVaciar} : Props) {
+export default function Checkout () {
+    const {total, items, vaciar} = useCart();
     const [form, setForm] = useState<DatosEnvio>({ nombre : '', email: '', direccion: '', telefono:'' });
     type tocadoType = Partial<Record<keyof DatosEnvio, boolean>>;
     const [tocados, setTocados] = useState<tocadoType>({}); 
@@ -37,12 +35,12 @@ export default function Checkout ({carrito, total, onVaciar} : Props) {
             id : Date.now(),
             fecha : new Date().toISOString(),
             cliente: form,
-            items : carrito,
+            items : items,
             total : total
         };
         guardarPedido(pedido);
         setNumeroPedido(pedido.id);
-        onVaciar();
+        vaciar;
     }
     if(numeroPedido !== 0){
         return( 
@@ -53,7 +51,7 @@ export default function Checkout ({carrito, total, onVaciar} : Props) {
             </div>
         )
     }
-    if(carrito.length === 0) {
+    if(items.length === 0) {
         return (
             <div className="p-6">
                 <p className="text-gray-500">Tu carrito esta vacio: no hay nada que pagar</p>

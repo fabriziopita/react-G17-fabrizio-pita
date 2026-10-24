@@ -1,5 +1,5 @@
-import formatearPrecio from "../formato";
-import type { Producto } from "../tipos";
+import formatearPrecio from "../../formato";
+import type { Producto } from "../../dominio/tipos";
 import EtiquetaStock from "./EtiquetaStock";
 
 interface Props {
@@ -20,11 +20,18 @@ export default function ProductCard({ producto, onAgregar } : Props) {
         <EtiquetaStock stock={producto.stock}/>
         <p className="text-sx text-gray-500">{(producto.precio * 1.18).toFixed(2)} con IGV</p>
         <p className="mt-2">{formatearPrecio(producto.precio)}</p>
-        <button className="mt-3 rounded-full border px-4 text-sm" disabled={producto.stock===0}
-        onClick={() => onAgregar(producto)}
-        >
-          {producto.stock === 0 ? 'Agotado' : 'Agregar al carrito'}
-        </button>
+        <nav className="flex justify-between">
+          <button className="mt-3 rounded-full border px-4 text-sm" disabled={producto.stock===0}
+          onClick={() => onAgregar(producto)}
+          >
+            {producto.stock === 0 ? 'Agotado' : 'Agregar al carrito'}
+          </button>
+
+          <button className="mt-3 rounded-full border px-4 text-sm">
+            ♡
+          </button>
+        </nav>
+
     </article>
   )
 }

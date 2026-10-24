@@ -1,17 +1,18 @@
-import type { Categoria, EstadoCarga, Producto } from "../tipos";
+import { NOMBRE_TIENDA, type Categoria, type EstadoCarga, type Producto } from "../../dominio/tipos";
 import { useEffect, useState } from "react";
 import SkeletonCard from "../components/SkeletonCard";
 import ProductCard from "../components/ProductCard";
+import { useCart } from "../../aplicacion/useCart";
 interface Props {
     esRespaldo : boolean;
     onReintentar : (intento : number, estado : EstadoCarga) => void;
     productos : Producto[];
-    estado : EstadoCarga;
-    onAgregar : (producto : Producto) => void;
+    estado : EstadoCarga
 }
 
-const nombreTienda = 'Tienda Tech';
-export function Home({esRespaldo, onReintentar, productos, estado, onAgregar} : Props) {
+export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
+    const {agregar} = useCart();
+
     const categorias: Categoria[] = ['todas', ...new Set(productos.map(p => p.categoria))];
     const [categoriaActiva, setCategoriaActiva] = useState<string>('todas');
     const [termino, setTermino] = useState('');
@@ -22,7 +23,7 @@ export function Home({esRespaldo, onReintentar, productos, estado, onAgregar} : 
         p.marca.toLowerCase().includes(busqueda))
     ));
       useEffect(() => {
-        document.title = `${nombreTienda} - ${visibles.length} resultados`;
+        document.title = `${NOMBRE_TIENDA} - ${visibles.length} resultados`;
     },[visibles.length]);
     return (
         <>
@@ -66,7 +67,7 @@ export function Home({esRespaldo, onReintentar, productos, estado, onAgregar} : 
             {estado === 'listo' && (
                     <section>
                     {
-                        visibles.map((p) => <ProductCard producto={p} key={p.id} onAgregar={onAgregar}/>)
+                        visibles.map((p) => <ProductCard producto={p} key={p.id} onAgregar={agregar}/>)
                     }
                     </section>
                 )

@@ -1,3 +1,5 @@
+export const NOMBRE_TIENDA:string = 'Tienda Tech';
+
 export interface Producto {
     id : number;
     nombre : string;
@@ -19,16 +21,23 @@ export interface ItemCarrito  {
 }
 
 export interface DatosEnvio {
-    nombre:string;
-    email:string;
-    direccion:string;
-    telefono:string;
+    nombre: string;
+    email : string; 
+    direccion : string;
+    telefono : string;
 }
 
 export interface Pedido {
     id: number;
-    fecha: string;
+    fecha : string;
     cliente : DatosEnvio;
     items : ItemCarrito[];
-    total: number;
+    total : number;
+}
+
+export interface Usuario {
+    id: number;
+    nombre : string;
+    email : string;
+    token:string;
 }

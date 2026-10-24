@@ -1,22 +1,15 @@
 import { useState, useEffect } from "react"
-import Footer from "./components/Footer"
-import Header from "./components/Header"
-import type {EstadoCarga, ItemCarrito, Producto} from "./tipos"
-import { agregarItem, quitarItem } from "./carrito"
+import {NOMBRE_TIENDA, type EstadoCarga, type Producto} from "./dominio/tipos"
 import formatearPrecio from "./formato"
-import { obtenerProductos } from "./api"
-import Detalle from './pages/Detalle';
-import PanelCarrito from "./components/PanelCarrito"
+import { obtenerProductos } from "./infraestructura/api"
+import Detalle from './ui/pages/Detalle';
 import { Route, Routes } from "react-router"
-import { Home } from "./pages/Home"
-import Layout from "./layout/Layout"
-import NoEncontrada from "./pages/NoEncontrada"
-import Checkout from "./pages/Checkout"
-
-const CLAVE_CARRITO = 'tienda_carrito';
+import { Home } from "./ui/pages/Home"
+import Layout from "./ui/layout/Layout"
+import NoEncontrada from "./ui/pages/NoEncontrada"
+import Checkout from "./ui/pages/Checkout"
 
 export default function App() {
-  const [carrito, setCarrito] = useState<ItemCarrito[]>(leerCarrito);
 
   const [productos, setProductos] = useState<Producto[]>([]);
   const [estado, setEstado] = useState<EstadoCarga>('cargando');
@@ -38,66 +31,33 @@ export default function App() {
     }
     cargar();
     return () => controlador.abort();
-  },[intento])
-  useEffect( () => {
-    try {
-      localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
-    } catch (error) {
-      console.warn('No se pudo guardar el carrito', error instanceof Error ? error.message : error);
-    }
-  }, [carrito]);
-
-  function agregarAlCarrito(producto : Producto) {
-    setCarrito(agregarItem(producto, carrito))
-  }
-  function quitarDelCarrito(id : number) {
-    setCarrito(quitarItem(carrito, id));
-  }
-  function vaciarCarrito() {
-    setCarrito([]);
-  }
-  function leerCarrito() : ItemCarrito[] {
-    try {
-      const crudo : unknown = JSON.parse(localStorage.getItem(CLAVE_CARRITO) ?? '[]');
-      return Array.isArray(crudo) ? (crudo as ItemCarrito[]) : [];
-    } catch (error) {
-      return [];
-    }
-  }
-  
-  const unidades = carrito.reduce((suma, i) => suma + i.cantidad, 0);
-  const total = carrito.reduce((suma, i) => suma + i.precio * i.cantidad, 0);
-  const nombreTienda = 'Tienda Tech';
+  },[intento])  
   
   return (
     <Routes>
       <Route element = {
         <Layout
-          nombreTienda = {nombreTienda}
-          resumen = {`🛒 ${unidades} productos - ${formatearPrecio(total)}`}
-          items = {carrito}
-          onQuitar = {quitarDelCarrito}
-          onVaciar={vaciarCarrito}
+          nombreTienda = {NOMBRE_TIENDA}
         />
       }>
         <Route path="/" element = {
           <Home esRespaldo={esRespaldo} onReintentar={() => {setIntento(intento + 1); setEstado('cargando')}}
-          productos={productos} estado={estado} onAgregar={agregarAlCarrito}/>
+          productos={productos} estado={estado}/>
         }
         />
         <Route  path="/producto/:id" element = {
-          <Detalle productos={productos} onAgregar={agregarAlCarrito}/>
+          <Detalle productos={productos}/>
         }
+        />
+        <Route path="/checkout" element = {
+            <Checkout/>
+          }
         />
         
       </Route>
       <Route path="*" element ={
           <NoEncontrada/>
       }/>
-      <Route  path="/checkout" element = {
-          <Checkout carrito={carrito} total={total} onVaciar={vaciarCarrito}/>
-        }
-      />
     </Routes>
   )
 }

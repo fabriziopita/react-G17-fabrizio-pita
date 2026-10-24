@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { DatosEnvio, ItemCarrito } from "../tipos"
+import type { DatosEnvio, ItemCarrito } from "../../dominio/tipos"
 
 interface Props {
     carrito : ItemCarrito[];
