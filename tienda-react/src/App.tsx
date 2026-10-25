@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import {NOMBRE_TIENDA, type EstadoCarga, type Producto} from "./dominio/tipos"
-import formatearPrecio from "./formato"
 import { obtenerProductos } from "./infraestructura/api"
 import Detalle from './ui/pages/Detalle';
 import { Route, Routes } from "react-router"
@@ -45,7 +44,7 @@ export default function App() {
           productos={productos} estado={estado}/>
         }
         />
-        <Route  path="/producto/:id" element = {
+        <Route path="/producto/:id" element = {
           <Detalle productos={productos}/>
         }
         />

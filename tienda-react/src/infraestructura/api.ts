@@ -20,7 +20,8 @@ function mapearProducto (crudo : ProductoAPI) : Producto {
         precio : crudo.price,
         imagen : crudo.thumbnail,
         categoria : (crudo.category ?? 'otros') as Producto['categoria'],
-        stock : crudo.stock ?? 0
+        stock : crudo.stock ?? 0,
+        favorito: false
     }
 }
 

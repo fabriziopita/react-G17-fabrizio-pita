@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 import { useCart } from "../../aplicacion/useCart";
-import formatearPrecio from "../../formato";
+import formatearPrecio from "../formato.ts";
 
 interface Props { 
     nombre : string; 

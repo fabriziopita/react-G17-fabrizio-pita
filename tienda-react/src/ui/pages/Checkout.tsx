@@ -1,10 +1,9 @@
 import { Link } from "react-router";
-import formatearPrecio from "../../formato";
+import formatearPrecio from "../formato";
 import type { DatosEnvio, Pedido } from "../../dominio/tipos";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { guardarPedido } from "../../infraestructura/pedidos";
 import { useCart } from "../../aplicacion/useCart";
-
 
 type Errores = Partial<Record<keyof DatosEnvio, string>>
 function validar (form : DatosEnvio) : Errores {

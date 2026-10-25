@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import PanelCarrito from "../components/PanelCarrito";
 import Footer from "../components/Footer";
 import { useCart } from "../../aplicacion/useCart";
-import formatearPrecio from "../../formato";
+import formatearPrecio from "../formato";
 import Beneficio from "../components/Beneficio";
 
 interface Props {
@@ -21,7 +21,7 @@ export default function ({nombreTienda} : Props) {
             resumen={`🛒 ${unidades} productos - ${formatearPrecio(total)}`}/>
             <Banner titulo="Tecnología para tu próximo nivel"></Banner>
             
-            <button className="mb-4 text-sm" 
+            <button className="bg-blue-500 text-white rounded-md hover:bg-blue-600 px-4 py-2 mb-4" 
             onClick={() => setCarritoAbierto(!carritoAbierto)}>
                 {carritoAbierto ? 'Ocultar carrito' : 'Ver carrito'}
             </button>

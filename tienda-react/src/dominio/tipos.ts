@@ -1,5 +1,3 @@
-export const NOMBRE_TIENDA:string = 'Tienda Tech';
-
 export interface Producto {
     id : number;
     nombre : string;
@@ -8,9 +6,10 @@ export interface Producto {
     imagen : string;
     stock : number;
     categoria : Categoria;
+    favorito : boolean
 }
-
-export type Categoria = 'todas'| 'laptops'|'audio'|'relojes'|'computadoras';
+export const NOMBRE_TIENDA = 'Tienda Tech';
+export type Categoria = 'todas' | 'favoritos' | 'laptops' | 'audio' | 'relojes' |'computadoras';
 export type EstadoCarga = 'cargando' | 'listo' | 'error';
 
 export interface ItemCarrito  {

@@ -1,5 +1,4 @@
 import { useCart } from "../../aplicacion/useCart";
-import Beneficio from "./Beneficio";
 export default function PanelCarrito () {
     const {items, quitar, vaciar} = useCart();
     return (
