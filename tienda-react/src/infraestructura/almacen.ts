@@ -5,24 +5,25 @@ export function leerSesion() : Usuario | null {
     try {
         const crudo : unknown = JSON.parse(localStorage.getItem(CLAVE_SESION) ?? 'null');
         if(
-            typeof crudo === 'object' && crudo !== null &&
-            typeof (crudo as Usuario).token === 'string' &&
-            typeof (crudo as Usuario).expiraEn === 'number'
+            typeof crudo === 'object' && crudo!== null 
+            && typeof (crudo as Usuario).token === 'string' &&
+            typeof(crudo as Usuario).expiraEn === 'number'
         ) {
             return crudo as Usuario;
         }
-    } catch (error) {
         return null;
+    } catch (error) {
+        return null
     }
 }
-export function guardarSesion(usuario:Usuario) {
+export function guardarSesion(usuario : Usuario) {
     try {
-        localStorage.setItem(CLAVE_SESION, JSON.stringify(usuario))
+        localStorage.setItem(CLAVE_SESION, JSON.stringify(usuario));
     } catch (error) {
-        console.warn('No se pudo guardar la sesión.')
+        console.warn('No se pudo guardar la sesion');
     }
 }
 
-export function borrarSesion() {
+export function borrarSesion () {
     localStorage.removeItem(CLAVE_SESION);
 }

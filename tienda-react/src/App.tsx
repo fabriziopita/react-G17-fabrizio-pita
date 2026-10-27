@@ -8,6 +8,7 @@ import Layout from "./ui/layout/Layout"
 import NoEncontrada from "./ui/pages/NoEncontrada"
 import Checkout from "./ui/pages/Checkout"
 import Login from "./ui/pages/Login";
+import RutaProtegida from "./ui/components/RutaProtegida";
 
 export default function App() {
 
@@ -49,10 +50,13 @@ export default function App() {
           <Detalle productos={productos}/>
         }
         />
-        <Route path="/checkout" element = {
+        <Route element={<RutaProtegida/>}>
+          <Route path="/checkout" element = {
             <Checkout/>
-          }
-        />
+            }
+          />
+        </Route>
+
         <Route path="/login" element = {
           <Login/>
         }/>

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useSesion } from "../../aplicacion/useSesion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [usuario, setUsuario] = useState('');
@@ -9,13 +9,15 @@ export default function Login() {
     const [enviando, setEnviando] = useState(false);
     const {entrar} = useSesion();
     const navegar = useNavigate();
+    const ubicacion = useLocation();
+    const desde = (ubicacion.state as {desde?:string} | null)?.desde ?? '/';
 
     async function manejarEnvio(e : FormEvent) {
         e.preventDefault();
         setError('');
         try {
             await entrar(usuario, password);   
-            navegar('/');
+            navegar(desde, {replace: true});
         } catch (error) {
             setError(error instanceof Error ? error.message : 'No se pudo iniciar sesión');
         } finally {

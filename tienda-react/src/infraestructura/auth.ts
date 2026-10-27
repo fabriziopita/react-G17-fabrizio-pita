@@ -1,7 +1,7 @@
 import type { Usuario } from "../dominio/tipos";
 
-const BASE = 'https://dummyjson.com';
-const MINUTOS_SESION = 30;
+const BASE = import.meta.env.VITE_API_URL;
+const MINUTOS_SESION = 2;
 interface RespuestaLogin {
     id: number;
     username: string;
@@ -25,17 +25,18 @@ export async function iniciarSesion (usuario : string, clave : string) : Promise
         id: data.id,
         nombre: data.firstName || data.username,
         email: data.email,
-        token: data.accessToken,
-        expiraEn : Date.now() + MINUTOS_SESION * 60 * 1000
+        token : data.accessToken,
+        expiraEn: Date.now() + MINUTOS_SESION * 60 * 1000 
+        // 9:11 + 30 min
     }
 }
 
-export async function obtenerPerfil (token: string, signal? : AbortSignal) : Promise<void> {
-    const response = await fetch(`${BASE}/auth/me`, {
-        headers: {
+export async function obtenerPerfil (token : string, signal? : AbortSignal) : Promise<void> {
+    const r = await fetch(`${BASE}/auth/me`, {
+        headers : {
             'Authorization' : `Bearer ${token}`
         },
         signal
-    })
-    if (!response.ok) throw new Error (`Sesion rechazada por el servidor (HTTP ${response.status})`);
+    });
+    if(!r.ok) throw new Error (`Sesion rechazada por el servidor (HTTP ${r.status})`);
 }

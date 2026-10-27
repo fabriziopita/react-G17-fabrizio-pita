@@ -18,15 +18,16 @@ export function SesionProvider({children} : {children : ReactNode}) {
         guardarSesion(conectado);
         setUsuario(conectado);
     }
-    function salir(){
+    function salir() {
         borrarSesion();
         setUsuario(null);
     }
     useEffect(() => {
         if(!usuario) return;
 
+        // 9:11 + 30 min = 9:41 - 9:30. 11 minutos.
         const restante = usuario.expiraEn - Date.now();
-        if (restante <= 0) {
+        if(restante <= 0 ) { 
             borrarSesion();
             setUsuario(null);
             return;
@@ -35,7 +36,7 @@ export function SesionProvider({children} : {children : ReactNode}) {
         const controlador = new AbortController();
         obtenerPerfil(usuario.token, controlador.signal).catch((error : unknown) => {
             if(error instanceof DOMException && error.name === 'AbortError') return;
-            console.warn('La sesión guardada ya no es valida');
+            console.warn('La sesion guardada ya no es valida');
             borrarSesion();
             setUsuario(null);
         });
@@ -50,8 +51,8 @@ export function SesionProvider({children} : {children : ReactNode}) {
             clearTimeout(temporizador);
         }
     }, [usuario])
-    return(
-        <SesionContext.Provider value={{usuario: usuario, entrar, salir}}>
+    return (
+        <SesionContext.Provider value={{usuario, entrar, salir}}>
             {children}
         </SesionContext.Provider>
     )
