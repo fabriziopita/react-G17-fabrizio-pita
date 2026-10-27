@@ -7,6 +7,7 @@ import { Home } from "./ui/pages/Home"
 import Layout from "./ui/layout/Layout"
 import NoEncontrada from "./ui/pages/NoEncontrada"
 import Checkout from "./ui/pages/Checkout"
+import Login from "./ui/pages/Login";
 
 export default function App() {
 
@@ -52,7 +53,10 @@ export default function App() {
             <Checkout/>
           }
         />
-        
+        <Route path="/login" element = {
+            <Login/>
+          }
+        />
       </Route>
       <Route path="*" element ={
           <NoEncontrada/>

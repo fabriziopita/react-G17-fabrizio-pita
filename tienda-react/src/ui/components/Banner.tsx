@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 interface Props {
     titulo : string;
     subtitulo?: string;
