@@ -1,6 +1,7 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useEffect, useState, type ReactNode } from "react";
 import type { Usuario } from "../dominio/tipos";
-import { iniciarSesion } from "../infraestructura/auth";
+import { iniciarSesion, obtenerPerfil } from "../infraestructura/auth";
+import { borrarSesion, guardarSesion, leerSesion } from "../infraestructura/almacen";
 
 interface ValorSesion {
     usuario : Usuario | null;
@@ -11,14 +12,44 @@ interface ValorSesion {
 export const SesionContext = createContext<ValorSesion | null>(null);
 
 export function SesionProvider({children} : {children : ReactNode}) {
-    const [usuario, setUsuario] = useState<Usuario | null>(null);
+    const [usuario, setUsuario] = useState<Usuario | null>(leerSesion);
     async function entrar(usuario : string, clave: string) {
         const conectado = await iniciarSesion(usuario, clave);
+        guardarSesion(conectado);
         setUsuario(conectado);
     }
     function salir(){
+        borrarSesion();
         setUsuario(null);
     }
+    useEffect(() => {
+        if(!usuario) return;
+
+        const restante = usuario.expiraEn - Date.now();
+        if (restante <= 0) {
+            borrarSesion();
+            setUsuario(null);
+            return;
+        }
+
+        const controlador = new AbortController();
+        obtenerPerfil(usuario.token, controlador.signal).catch((error : unknown) => {
+            if(error instanceof DOMException && error.name === 'AbortError') return;
+            console.warn('La sesión guardada ya no es valida');
+            borrarSesion();
+            setUsuario(null);
+        });
+
+        const temporizador = setTimeout(() => {
+            borrarSesion();
+            setUsuario(null);
+        }, restante);
+
+        return () => {
+            controlador.abort();
+            clearTimeout(temporizador);
+        }
+    }, [usuario])
     return(
         <SesionContext.Provider value={{usuario: usuario, entrar, salir}}>
             {children}
