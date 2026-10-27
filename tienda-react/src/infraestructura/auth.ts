@@ -2,7 +2,6 @@ import type { Usuario } from "../dominio/tipos";
 
 const BASE = 'https://dummyjson.com';
 const MINUTOS_SESION = 30;
-
 interface RespuestaLogin {
     id: number;
     username: string;
