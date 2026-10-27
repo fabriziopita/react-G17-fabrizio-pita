@@ -51,12 +51,11 @@ export default function App() {
         }
         />
         <Route element={<RutaProtegida/>}>
-          <Route path="/checkout" element = {
+          <Route  path="/checkout" element = {
             <Checkout/>
-            }
+          }
           />
         </Route>
-
         <Route path="/login" element = {
           <Login/>
         }/>

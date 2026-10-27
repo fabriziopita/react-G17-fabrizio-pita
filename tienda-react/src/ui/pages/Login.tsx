@@ -10,13 +10,13 @@ export default function Login() {
     const {entrar} = useSesion();
     const navegar = useNavigate();
     const ubicacion = useLocation();
-    const desde = (ubicacion.state as {desde?:string} | null)?.desde ?? '/';
+    const desde = (ubicacion.state as {desde? : string} | null)?.desde ?? '/';
 
     async function manejarEnvio(e : FormEvent) {
         e.preventDefault();
         setError('');
         try {
-            await entrar(usuario, password);   
+            await entrar(usuario, password);
             navegar(desde, {replace: true});
         } catch (error) {
             setError(error instanceof Error ? error.message : 'No se pudo iniciar sesión');

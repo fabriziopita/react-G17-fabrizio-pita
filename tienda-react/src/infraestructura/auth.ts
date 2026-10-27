@@ -1,7 +1,7 @@
 import type { Usuario } from "../dominio/tipos";
 
 const BASE = import.meta.env.VITE_API_URL;
-const MINUTOS_SESION = 2;
+const MINUTOS_SESION = 30;
 interface RespuestaLogin {
     id: number;
     username: string;
