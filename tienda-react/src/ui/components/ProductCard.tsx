@@ -3,13 +3,14 @@ import type { Producto } from "../../dominio/tipos";
 import EtiquetaStock from "./EtiquetaStock";
 import { useFavorito } from "../../aplicacion/useFavorito";
 import { Link } from "react-router-dom";
+import { memo } from "react";
 
 interface Props {
   producto: Producto;
   onAgregar: (producto: Producto) => void;
 }
 
-export default function ProductCard({ producto, onAgregar }: Props) {
+function ProductCard({ producto, onAgregar }: Props) {
   const {alternar, favorito} = useFavorito();
   const agotado = producto.stock === 0;
   return (
@@ -47,3 +48,5 @@ export default function ProductCard({ producto, onAgregar }: Props) {
     </article>
   );
 }
+
+export default memo(ProductCard);

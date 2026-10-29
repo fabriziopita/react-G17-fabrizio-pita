@@ -1,5 +1,5 @@
 import { NOMBRE_TIENDA, type Categoria, type EstadoCarga, type Producto } from "../../dominio/tipos";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SkeletonCard from "../components/SkeletonCard";
 import ProductCard from "../components/ProductCard";
 import { useCart } from "../../aplicacion/useCart";
@@ -21,10 +21,10 @@ export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
     const [termino, setTermino] = useState('');
     const busqueda = termino.trim().toLowerCase();  
 
-    const visibles = productos.filter( (p) => (
+    const visibles = useMemo(() => productos.filter( (p) => (
         (categoriaActiva === 'todas' || p.categoria === categoriaActiva || (categoriaActiva === 'favoritos' && favorito(p))) && 
         (busqueda === '' || p.nombre.toLowerCase().includes(busqueda) || p.marca.toLowerCase().includes(busqueda)) 
-    ));
+    )), [productos, categoriaActiva, busqueda]);
 
     useEffect(() => {
         document.title = `${NOMBRE_TIENDA} - ${visibles.length} resultados`;
