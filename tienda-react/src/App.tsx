@@ -9,6 +9,8 @@ import NoEncontrada from "./ui/pages/NoEncontrada"
 import Checkout from "./ui/pages/Checkout"
 import Login from "./ui/pages/Login";
 import RutaProtegida from "./ui/components/RutaProtegida";
+import Nosotros from "./ui/pages/Nosotros";
+import Contacto from "./ui/pages/Contacto";
 
 export default function App() {
 
@@ -48,6 +50,14 @@ export default function App() {
         />
         <Route path="/producto/:id" element = {
           <Detalle productos={productos}/>
+        }
+        />
+        <Route path="/nosotros" element = {
+          <Nosotros/>
+        }
+        />
+        <Route path="/contacto" element = {
+          <Contacto/>
         }
         />
         <Route element={<RutaProtegida/>}>

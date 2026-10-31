@@ -26,6 +26,13 @@ export interface DatosEnvio {
     telefono : string;
 }
 
+export interface DatosContacto {
+    nombre: string;
+    email : string; 
+    telefono : string;
+    informacion : string;
+}
+
 export interface Pedido {
     id: number;
     fecha : string;

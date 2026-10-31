@@ -20,8 +20,9 @@ export default function Header ({ nombre, eslogan = "Tecnologia para todos" } : 
             </div> 
 
             <nav className="mt-2 flex gap-4"> 
-                <NavLink to="/" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline' : 'hover:underline hover:text-blue-600')}>Catalogo</NavLink> 
-                <NavLink to="/checkout" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline' : 'hover:underline hover:text-blue-600')}>Checkout</NavLink> 
+                <NavLink to="/" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline text-blue-800' : 'hover:underline text-blue-500')}>Catalogo</NavLink> 
+                <NavLink to="/nosotros" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline text-blue-800' : 'hover:underline text-blue-500')}>Sobre nosotros</NavLink> 
+                <NavLink to="/checkout" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline text-blue-800' : 'hover:underline text-blue-500')}>Checkout</NavLink> 
             </nav> 
 
             <p className="rounded-md bg-slate-100 px-3 py-2 text-slate-700"> 
@@ -33,7 +34,7 @@ export default function Header ({ nombre, eslogan = "Tecnologia para todos" } : 
                         <button className="ml-2 underline" onClick={salir}>Salir</button>
                     </p>
                 ) : (
-                    <Link to="/login" className="ml-2 underline">Inicie sesión</Link>
+                    <Link to="/login" className="ml-2 underline text-blue-900">Inicie sesión</Link>
                 )
             }
         </header> 

@@ -40,7 +40,7 @@ export default function Login() {
             {error && <p className="text-sm text-red-600">{error}</p>}
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
             disabled = {enviando}>
-                {enviando ? 'Iniciar sesión' : 'Entrando...'}
+                {enviando ? 'Entrando...' : 'Iniciar sesión'}
             </button>
         </form>
     )

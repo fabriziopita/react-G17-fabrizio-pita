@@ -24,11 +24,16 @@ export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
     const visibles = useMemo(() => productos.filter( (p) => (
         (categoriaActiva === 'todas' || p.categoria === categoriaActiva || (categoriaActiva === 'favoritos' && favorito(p))) && 
         (busqueda === '' || p.nombre.toLowerCase().includes(busqueda) || p.marca.toLowerCase().includes(busqueda)) 
-    )), [productos, categoriaActiva, busqueda]);
+    )), [productos, categoriaActiva, busqueda, favorito]);
 
     useEffect(() => {
         document.title = `${NOMBRE_TIENDA} - ${visibles.length} resultados`;
     },[visibles.length]);
+
+    const marcas = productos.map((p) => (p.marca));
+    console.log(
+        marcas
+    );
 
     return (
         <>
@@ -37,7 +42,7 @@ export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
                 esRespaldo && (
                 <p className="mb-4 rounded-lg border border-orange-300 bg-orange-500 p-2 text-sm">
                     Mostrando el catalogo Local, no pudimos conectar con la tienda.
-                    <button className="ml-2 underline" onClick={() => {onReintentar}}>Reintentar</button>
+                    <button className="ml-2 underline hover:opacity-50" onClick={() => {onReintentar}}>Reintentar</button>
                 </p>
                 )
             }
