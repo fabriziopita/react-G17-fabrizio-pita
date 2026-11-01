@@ -2,7 +2,6 @@ import { createContext, useEffect, useState, type ReactNode } from "react";
 import type { Usuario } from "../dominio/tipos";
 import { iniciarSesion, obtenerPerfil } from "../infraestructura/auth";
 import { borrarSesion, guardarSesion, leerSesion } from "../infraestructura/almacen";
-
 interface ValorSesion {
     usuario : Usuario | null;
     entrar : (usuario : string, clave : string) => Promise<void>;
@@ -34,7 +33,18 @@ export function SesionProvider({children} : {children : ReactNode}) {
         }
 
         const controlador = new AbortController();
-        obtenerPerfil(usuario.token, controlador.signal).catch((error : unknown) => {
+        obtenerPerfil(usuario.token, controlador.signal).then((perfil) => {
+            setUsuario((datos) => {
+                if (!datos) return datos;
+                const usuarioFinal = {
+                    ...datos,
+                    ...perfil
+                }
+                guardarSesion(usuarioFinal);
+                return usuarioFinal;
+            })
+        })
+        .catch((error : unknown) => {
             if(error instanceof DOMException && error.name === 'AbortError') return;
             console.warn('La sesion guardada ya no es valida');
             borrarSesion();
@@ -51,6 +61,7 @@ export function SesionProvider({children} : {children : ReactNode}) {
             clearTimeout(temporizador);
         }
     }, [usuario])
+    
     return (
         <SesionContext.Provider value={{usuario, entrar, salir}}>
             {children}

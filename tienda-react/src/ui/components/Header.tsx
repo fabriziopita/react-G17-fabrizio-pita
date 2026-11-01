@@ -31,9 +31,9 @@ export default function Header ({ nombre, eslogan = "Tecnologia para todos" } : 
             </p> 
             {
                 usuario ? (
-                    <p className="text-sm">Hola, {usuario.nombre}
+                    <Link to="/usuario" className="text-sm hover:underline">Hola, {usuario.nombre}
                         <button className="ml-2 underline" onClick={salir}>Salir</button>
-                    </p>
+                    </Link>
                 ) : (
                     <Link to="/login" className="ml-2 underline text-blue-900">Inicie sesión</Link>
                 )

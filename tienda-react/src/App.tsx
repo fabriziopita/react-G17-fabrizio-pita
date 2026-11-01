@@ -12,6 +12,7 @@ import RutaProtegida from "./ui/components/RutaProtegida";
 import Nosotros from "./ui/pages/Nosotros";
 import Contacto from "./ui/pages/Contacto";
 import Ayuda from "./ui/pages/Ayuda";
+import Usuario from "./ui/pages/Usuario";
 
 export default function App() {
 
@@ -68,6 +69,12 @@ export default function App() {
         <Route element={<RutaProtegida/>}>
           <Route  path="/checkout" element = {
             <Checkout/>
+          }
+          />
+        </Route>
+          <Route element={<RutaProtegida/>}>
+          <Route  path="/usuario" element = {
+            <Usuario/>
           }
           />
         </Route>

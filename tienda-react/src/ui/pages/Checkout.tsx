@@ -4,6 +4,7 @@ import type { DatosEnvio, Pedido } from "../../dominio/tipos";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { guardarPedido } from "../../infraestructura/pedidos";
 import { useCart } from "../../aplicacion/useCart";
+import { useSesion } from "../../aplicacion/useSesion";
 
 type Errores = Partial<Record<keyof DatosEnvio, string>>
 function validar (form : DatosEnvio) : Errores {
@@ -15,6 +16,7 @@ function validar (form : DatosEnvio) : Errores {
     return errores;
 }
 export default function Checkout () {
+    const {usuario} = useSesion();
     const {total, items, vaciar} = useCart();
     const [form, setForm] = useState<DatosEnvio>({ nombre : '', email: '', direccion: '', telefono:'' });
     type tocadoType = Partial<Record<keyof DatosEnvio, boolean>>;
@@ -30,8 +32,10 @@ export default function Checkout () {
         e.preventDefault();
         setTocados({nombre: true, email:true, direccion: true, telefono:true});
         if(hayErrores) return;
+        if(!usuario) return;
         const pedido : Pedido = {
             id : Date.now(),
+            usuarioId: usuario.id,
             fecha : new Date().toISOString(),
             cliente: form,
             items : items,
@@ -39,7 +43,7 @@ export default function Checkout () {
         };
         guardarPedido(pedido);
         setNumeroPedido(pedido.id);
-        vaciar;
+        vaciar();
     }
     if(numeroPedido !== 0){
         return( 

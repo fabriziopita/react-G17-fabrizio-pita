@@ -35,6 +35,7 @@ export interface DatosContacto {
 
 export interface Pedido {
     id: number;
+    usuarioId: number;
     fecha : string;
     cliente : DatosEnvio;
     items : ItemCarrito[];
@@ -43,8 +44,18 @@ export interface Pedido {
 
 export interface Usuario {
     id: number;
-    nombre : string;
-    email : string;
-    token:string;
-    expiraEn: number
+    username: string;
+    token: string;
+    expiraEn: number;
+
+    nombre?: string;
+    apellido?: string;
+    email?: string;
+    genero?: string;
+    fotoPerfil?: string;
+    edad?: number;
+    telefono?: string;
+    direccion?: string;
+    ciudad?: string;
+    pais?: string;
 }
