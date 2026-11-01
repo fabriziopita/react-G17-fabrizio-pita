@@ -28,7 +28,7 @@ export default function Contacto () {
     }
     return(
         <form className="flex max-w-md flex-col gap-3" onSubmit={enviar}>
-            <h1 className="text-2xl font-bold">Datos de envio</h1>
+            <h1 className="text-2xl font-bold">Datos de contacto</h1>
             <label className="flex flex-col text-sm">
                 Nombre completo
                 <input type="text" className="rounded border px-3 py-2" value={form.nombre} 

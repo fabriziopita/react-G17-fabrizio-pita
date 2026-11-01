@@ -23,6 +23,7 @@ export default function Header ({ nombre, eslogan = "Tecnologia para todos" } : 
                 <NavLink to="/" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline text-blue-800' : 'hover:underline text-blue-500')}>Catalogo</NavLink> 
                 <NavLink to="/nosotros" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline text-blue-800' : 'hover:underline text-blue-500')}>Sobre nosotros</NavLink> 
                 <NavLink to="/checkout" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline text-blue-800' : 'hover:underline text-blue-500')}>Checkout</NavLink> 
+                <NavLink to="/ayuda" className={({ isActive }: { isActive: boolean }) => (isActive ? 'font-bold underline text-blue-800' : 'hover:underline text-blue-500')}>Ayuda</NavLink> 
             </nav> 
 
             <p className="rounded-md bg-slate-100 px-3 py-2 text-slate-700"> 

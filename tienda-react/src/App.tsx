@@ -11,6 +11,7 @@ import Login from "./ui/pages/Login";
 import RutaProtegida from "./ui/components/RutaProtegida";
 import Nosotros from "./ui/pages/Nosotros";
 import Contacto from "./ui/pages/Contacto";
+import Ayuda from "./ui/pages/Ayuda";
 
 export default function App() {
 
@@ -58,6 +59,10 @@ export default function App() {
         />
         <Route path="/contacto" element = {
           <Contacto/>
+        }
+        />
+        <Route path="/ayuda" element = {
+          <Ayuda/>
         }
         />
         <Route element={<RutaProtegida/>}>
