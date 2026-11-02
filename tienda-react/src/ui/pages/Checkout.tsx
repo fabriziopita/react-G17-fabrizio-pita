@@ -49,7 +49,7 @@ export default function Checkout () {
         return( 
             <div className="p-6">
                 <h1 className="text-2xl font-bold">Gracias por tu compra</h1>
-                <p className="mt-2 text-sm text-gray-200">Tu pedido Nro. {numeroPedido} quedo registrado</p>
+                <p className="mt-2 text-sm text-gray-700">Tu pedido Nro. {numeroPedido} quedo registrado</p>
                 <Link to="/" className="underline">Volver al catalogo</Link>
             </div>
         )
