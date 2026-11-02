@@ -37,7 +37,7 @@ export async function obtenerProductos(signal?: AbortSignal): Promise <{ product
             esRespaldo : false
         }
     } catch (error) {
-        if(error instanceof DOMException && error.name === 'AbortError') throw Error;
+        if(error instanceof DOMException && error.name === 'AbortError') throw error;
         console.warn('Api no disponible, usando el catalogo semilla.', error instanceof Error ? error.message : error);
         return {
             productos : respaldo,

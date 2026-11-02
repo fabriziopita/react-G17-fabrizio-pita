@@ -6,7 +6,7 @@ interface Props {
 }
 export default function Beneficio ( {titulo, icono, detalle} : Props) {
     return(
-        <article className="flex flex-col items-center border p-4 border-slate-600 rounded-md bg-slate-100">
+        <article className="beneficio flex flex-col items-center border p-4 border-slate-600 rounded-md bg-slate-100">
             <p className="text-3xl mb-2" aria-hidden="true">
                 {icono}
             </p>

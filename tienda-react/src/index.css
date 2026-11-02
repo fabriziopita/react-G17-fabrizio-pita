@@ -1,1 +1,39 @@
 @import 'tailwindcss';
+
+.tarjeta-producto {
+    box-shadow: 4px 8px 16px -4px rgba(0, 0, 0, 0.25);
+    animation: entrada 1s ease-out backwards; 
+    transition: box-shadow 0.3s ease, transform 0.2s ease-in;
+}
+
+.tarjeta-producto:hover {
+    transform: translateY(0) scale(1.02);
+    box-shadow: 4px 8px 24px -4px rgba(0, 0, 0, 0.45);
+}
+
+.beneficio {
+    transition: transform 0.15s ease-in;
+}
+
+.beneficio:hover {
+    transform: scale(1.05);
+}
+
+.boton-animado {
+    transition: transform 0.25s ease-in;
+}
+
+.boton-animado:hover {
+    transform: scale(1.05);
+}
+
+@keyframes entrada {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

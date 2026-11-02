@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react"
+import { useState, type ChangeEvent, type FormEvent } from "react"
 import type { DatosContacto, Ticket } from "../../dominio/tipos"
 import { useSesion } from "../../aplicacion/useSesion";
 import { guardarTicket } from "../../infraestructura/tickets";

@@ -32,7 +32,6 @@ export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
 
     return (
         <>
-            <section id="catalogo" className="flex justify-center gap-4 flex-wrap"></section>
             {
                 esRespaldo && (
                 <p className="mb-4 rounded-lg border border-orange-300 bg-orange-500 p-2 text-sm">
@@ -77,7 +76,7 @@ export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
             {estado === 'listo' && (
                     <section className="flex flex-wrap justify-around gap-4">
                     {
-                        visibles.map((p) => <ProductCard producto={p} key={p.id} onAgregar={agregar}/>)
+                        visibles.map((p, index) => <ProductCard producto={p} key={p.id} indexProducto={index} onAgregar={agregar}/>)
                     }
                     </section>
                 )

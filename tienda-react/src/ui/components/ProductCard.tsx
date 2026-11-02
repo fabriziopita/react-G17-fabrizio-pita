@@ -7,14 +7,19 @@ import { memo } from "react";
 
 interface Props {
   producto: Producto;
+  indexProducto: number;
   onAgregar: (producto: Producto) => void;
 }
 
-function ProductCard({ producto, onAgregar }: Props) {
+function ProductCard({ producto, indexProducto, onAgregar }: Props) {
   const {alternar, favorito} = useFavorito();
   const agotado = producto.stock === 0;
+
+  const retrasoAnimacion = (indexProducto) / 10;
+  console.log(retrasoAnimacion)
   return (
-    <article className={`w-64 rounded-xl border p-4 ${agotado ? 'opacity-50' : ''}`}>
+    <article className={`tarjeta-producto w-64 rounded-xl border p-4 ${agotado ? 'opacity-50' : ''}`}
+      style={{ animationDelay: `${retrasoAnimacion}s` }}>
       <Link to={`/producto/${producto.id}`} className="hover:opacity-50">
         <img src={producto.imagen} alt={producto.nombre} className="mb-3 aspect-square object-contain" />
       </Link>
@@ -32,15 +37,14 @@ function ProductCard({ producto, onAgregar }: Props) {
       <p className="mt-2">{formatearPrecio(producto.precio)}</p>
       
       <nav className="flex justify-between">
-        <button 
-          className="mt-3 rounded-full border px-4 text-sm" 
+        <button className="boton-animado mt-3 rounded-full border px-4 text-sm hover:bg-blue-600 hover:text-white" 
           disabled={producto.stock === 0} 
           onClick={() => onAgregar(producto)}>
 
           {producto.stock === 0 ? 'Agotado' : 'Agregar al carrito'}
         </button>
         
-        <button onClick={() => alternar(producto)} className={`mt-3 rounded-full border px-4 text-sm ${favorito(producto) ? 'opacity-50' : ''}`}
+        <button onClick={() => alternar(producto)} className={`boton-animado mt-3 rounded-full border px-4 text-sm ${favorito(producto) ? 'opacity-50' : ''}`}
           aria-label="Agregar producto como favorito">
           {favorito(producto) ? '♥' : '♡'} 
         </button>

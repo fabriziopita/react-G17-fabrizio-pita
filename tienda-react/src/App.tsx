@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import {NOMBRE_TIENDA, type EstadoCarga, type Producto} from "./dominio/tipos"
+import {type EstadoCarga, type Producto} from "./dominio/tipos"
 import { obtenerProductos } from "./infraestructura/api"
 import Detalle from './ui/pages/Detalle';
 import { Route, Routes } from "react-router"

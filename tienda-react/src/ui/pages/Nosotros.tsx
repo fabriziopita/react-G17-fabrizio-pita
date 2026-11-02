@@ -52,14 +52,14 @@ export default function Nosotros() {
                 <h2 className="text-2xl font-bold text-white">¿Qué ofrecemos?</h2>
                 <p className="text-gray-200">Ofrecemos laptops, computadoras, equipos de audio y relojes inteligentes para acompañarte en tus actividades de estudio, trabajo y entretenimiento.</p>
                 <h3 className="font-bold text-white">Explora nuestros productos</h3>
-                <Link to="/" className="bg-white hover:bg-blue-100 text-blue-600 font-bold py-2 px-4 rounded-md">Volver al catálogo</Link>
+                <Link to="/" className="boton-animado bg-white hover:bg-blue-100 text-blue-600 font-bold py-2 px-4 rounded-md">Volver al catálogo</Link>
             </section>
 
             <p className="mt-2 text-gray-500 text-center">Agradecemos a nuestros clientes por confiar en nosotros y esperamos seguir siendo su tienda de tecnología de confianza.</p>
 
             <section className="p-5 rounded-md flex flex-col items-center gap-4 text-center border p-4 border-blue-600 mt-5">
                 <h1 className="text-2xl font-bold text-slate-700 mb-2">¿Tienes alguna consulta?</h1>
-                <Link to="/contacto" className="bg-white hover:bg-blue-100 text-blue-600 font-bold py-2 px-4 rounded-md border p-4 border-blue-600">Contactanos aquí</Link>
+                <Link to="/contacto" className="boton-animado bg-white hover:bg-blue-100 text-blue-600 font-bold py-2 px-4 rounded-md border p-4 border-blue-600">Contactanos aquí</Link>
             </section>
             
         </section>

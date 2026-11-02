@@ -29,7 +29,7 @@ export default function Detalle ( {productos} : Props) {
                 <h1 className="text-2xl font-bold">{producto.nombre}</h1>
                 <EtiquetaStock stock={producto.stock}></EtiquetaStock>
                 <p className="mt-2 text-xl">{formatearPrecio(producto.precio * 1.18)} con IGV</p>
-                <button className="mt-4 rounded-full border px-4 py-1"
+                <button className="boton-animado mt-4 rounded-full border px-4 py-1 hover:bg-blue-600 hover:text-white"
                     onClick={() => agregar(producto)}
                     disabled={producto.stock === 0}
                     >
@@ -37,7 +37,7 @@ export default function Detalle ( {productos} : Props) {
                         producto.stock === 0 ? 'Agotado' : 'Agregar al carrito'
                     }
                 </button>
-                <button onClick={() => alternar(producto)} className={`mt-3 rounded-full border px-4 text-sm ${favorito(producto) ? 'opacity-50' : ''}`}
+                <button onClick={() => alternar(producto)} className={`boton-animado mt-3 rounded-full border px-4 text-sm ${favorito(producto) ? 'opacity-50' : ''}`}
                     aria-label="Agregar producto como favorito">
                     {favorito(producto) ? '♥' : '♡'} 
                 </button>
