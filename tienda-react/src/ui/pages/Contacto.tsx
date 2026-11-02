@@ -50,7 +50,6 @@ export default function Contacto () {
         }
     }
 
-    console.log(ticketActualizado);
     return(
         <form className="flex max-w-md flex-col gap-3" onSubmit={enviar}>
             <h1 className="text-2xl font-bold">Datos de contacto</h1>
