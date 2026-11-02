@@ -6,7 +6,7 @@ import { useCart } from "../../aplicacion/useCart";
 import { useFavorito } from "../../aplicacion/useFavorito";
 interface Props {
     esRespaldo : boolean;
-    onReintentar : (intento : number, estado : EstadoCarga) => void;
+    onReintentar : () => void;
     productos : Producto[];
     estado : EstadoCarga
 }
@@ -30,11 +30,6 @@ export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
         document.title = `${NOMBRE_TIENDA} - ${visibles.length} resultados`;
     },[visibles.length]);
 
-    const marcas = productos.map((p) => (p.marca));
-    console.log(
-        marcas
-    );
-
     return (
         <>
             <section id="catalogo" className="flex justify-center gap-4 flex-wrap"></section>
@@ -42,15 +37,15 @@ export function Home({esRespaldo, onReintentar, productos, estado} : Props) {
                 esRespaldo && (
                 <p className="mb-4 rounded-lg border border-orange-300 bg-orange-500 p-2 text-sm">
                     Mostrando el catalogo Local, no pudimos conectar con la tienda.
-                    <button className="ml-2 underline hover:opacity-50" onClick={() => {onReintentar}}>Reintentar</button>
+                    <button className="ml-2 underline hover:opacity-50" onClick={onReintentar}>Reintentar</button>
                 </p>
                 )
             }
-            <nav className="mb-4 flex gap-2" aria-label="Filtrar por categoria">
+            <nav className="mb-4 flex flex-wrap gap-2" aria-label="Filtrar por categoria">
                 {
                 categorias.map((c) => (
                     <button key={c} onClick={() => setCategoriaActiva(c)} 
-                    className={`rounded-full border px-3 py-1 text-sm ${ c === categoriaActiva ? 'bg-blue-600 text-white' : ''}`}>{c}
+                    className={`rounded-full border px-3 py-1 text-xs md:text-sm ${ c === categoriaActiva ? 'bg-blue-600 text-white' : ''}`}>{c}
                     </button>
                 ))
                 }

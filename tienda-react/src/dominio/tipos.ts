@@ -42,6 +42,13 @@ export interface Pedido {
     total : number;
 }
 
+export interface Ticket {
+    id: number;
+    usuarioId: number | null;
+    fecha: string;
+    contacto: DatosContacto;
+}
+
 export interface Usuario {
     id: number;
     username: string;

@@ -15,6 +15,7 @@ export default function Login() {
     async function manejarEnvio(e : FormEvent) {
         e.preventDefault();
         setError('');
+        setEnviando(true);
         try {
             await entrar(usuario, password);
             navegar(desde, {replace: true});

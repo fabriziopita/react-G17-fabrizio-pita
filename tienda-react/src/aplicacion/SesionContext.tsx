@@ -21,6 +21,10 @@ export function SesionProvider({children} : {children : ReactNode}) {
         borrarSesion();
         setUsuario(null);
     }
+
+    const token = usuario?.token;
+    const expiraEn = usuario?.expiraEn;
+
     useEffect(() => {
         if(!usuario) return;
 
@@ -60,7 +64,7 @@ export function SesionProvider({children} : {children : ReactNode}) {
             controlador.abort();
             clearTimeout(temporizador);
         }
-    }, [usuario])
+    }, [token, expiraEn]);
     
     return (
         <SesionContext.Provider value={{usuario, entrar, salir}}>

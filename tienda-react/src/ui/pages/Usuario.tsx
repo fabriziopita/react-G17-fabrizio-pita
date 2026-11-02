@@ -2,6 +2,8 @@ import { Link } from "react-router";
 import { useSesion } from "../../aplicacion/useSesion";
 import { leerComprasRealizadas } from "../../infraestructura/pedidos";
 
+import usuarioImagen from "../../img/usuario.png";
+
 export default function Usuario() {
     const { usuario } = useSesion();
 
@@ -17,9 +19,9 @@ export default function Usuario() {
     const comprasRealizadas = leerComprasRealizadas(usuario.id);
 
     return (
-        <article className="flex flex-wrap gap-8 p-6">
+        <article className="flex flex-wrap gap-8 p-6 justify-center">
             <img className="w-72 h-72 shrink-0 object-cover rounded-full border-2 border-blue-200"
-                src={usuario.fotoPerfil || "/img/usuario.png"} alt={usuario.nombre || usuario.username}/>
+                src={usuario.fotoPerfil || usuarioImagen} alt={usuario.nombre || usuario.username}/>
 
             <div className="flex flex-col items-start">
                 <h1 className="text-2xl font-bold">

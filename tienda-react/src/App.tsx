@@ -24,7 +24,7 @@ export default function App() {
     const controlador = new AbortController();
     async function cargar () {
       try {
-        const resultado = await obtenerProductos();
+        const resultado = await obtenerProductos(controlador.signal);
         setProductos(resultado.productos);
         setEsRespaldo(resultado.esRespaldo);
         setEstado('listo');
@@ -41,9 +41,7 @@ export default function App() {
   return (
     <Routes>
       <Route element = {
-        <Layout
-          nombreTienda = {NOMBRE_TIENDA}
-        />
+        <Layout/>
       }>
         <Route path="/" element = {
           <Home esRespaldo={esRespaldo} onReintentar={() => {setIntento(intento + 1); setEstado('cargando')}}
@@ -58,30 +56,28 @@ export default function App() {
           <Nosotros/>
         }
         />
-        <Route path="/contacto" element = {
-          <Contacto/>
-        }
-        />
         <Route path="/ayuda" element = {
           <Ayuda/>
         }
         />
+
         <Route element={<RutaProtegida/>}>
+          <Route  path="/contacto" element = {
+            <Contacto/>
+          }/>
           <Route  path="/checkout" element = {
             <Checkout/>
-          }
-          />
-        </Route>
-          <Route element={<RutaProtegida/>}>
+          }/>
           <Route  path="/usuario" element = {
             <Usuario/>
-          }
-          />
+          }/>
         </Route>
+
         <Route path="/login" element = {
-          <Login/>
-        }/>
+            <Login/>
+          }/>
       </Route>
+      
       <Route path="*" element ={
           <NoEncontrada/>
       }/>

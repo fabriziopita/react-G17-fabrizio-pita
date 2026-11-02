@@ -65,7 +65,7 @@ export default function Ayuda() {
             <section className="mb-6 rounded-md border border-slate-300 p-4">
                 <h2 className="text-2xl font-bold text-slate-700 mb-4">Soluciones a problemas frecuentes</h2>
 
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <article className="border border-slate-300 bg-slate-100 p-4 rounded-md">
                         <p className="text-3xl mb-2" aria-hidden="true">🚫</p>
                         <h3 className="text-lg font-bold text-slate-700">No puedo agregar un producto</h3>

@@ -25,10 +25,12 @@ function mapearProducto (crudo : ProductoAPI) : Producto {
     }
 }
 
-export async function obtenerProductos(): Promise <{ productos : Producto[] ; esRespaldo: boolean}> {
+export async function obtenerProductos(signal?: AbortSignal): Promise <{ productos : Producto[] ; esRespaldo: boolean}> {
     try {
-        const r = await fetch(`${BASE}/products?limit=24`);
-        if(!r.ok) throw new Error (`HTTP ${r.status}`);
+        const r = await fetch(`${BASE}/products?limit=24`, 
+            {signal}
+        );
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
         const data = (await r.json()) as { products : ProductoAPI[]};
         return {
             productos : data.products.map(mapearProducto),
